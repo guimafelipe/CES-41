@@ -1,0 +1,45 @@
+   texto  |   tipo   | atributo 
+--------------------------------
+         (|     ABPAR|          
+         )|      FPAR|          
+    151265|     CTINT|    151265
+        12|     CTINT|        12
+         a|     INVAL|         a
+        35|     CTINT|        35
+         _|     INVAL|         _
+         _|     INVAL|         _
+       H11|     CTHEX|        17
+     H1000|     CTHEX|      4096
+         +|      OPAD|      MAIS
+         -|      OPAD|     MENOS
+         *|    OPMULT|     VEZES
+         /|    OPMULT|       DIV
+         <|     OPREL|     MENOR
+        <=|     OPREL|     MENIG
+         >|     OPREL|     MAIOR
+        >=|     OPREL|      MAIG
+        ==|     OPREL|     IGUAL
+        !=|     OPREL|     DIFER
+         <|     OPREL|     MENOR
+         <|     OPREL|     MENOR
+         q|     INVAL|         q
+         =|     INVAL|         =
+         >|     OPREL|     MAIOR
+         >|     OPREL|     MAIOR
+         e|     INVAL|         e
+         =|     INVAL|         =
+         =|     INVAL|         =
+         1|     CTINT|         1
+         =|     INVAL|         =
+      412.|    CTREAL|412.000000
+    55.441|    CTREAL| 55.441000
+  Afchvghj|        ID|  Afchvghj
+      B_Cd|        ID|      B_Cd
+         B|        ID|         B
+         _|     INVAL|         _
+         C|        ID|         C
+      G_T4|        ID|      G_T4
+    G_T265|        ID|    G_T265
+         A|        ID|         A
+         A|        ID|         A
+         A|        ID|         A
