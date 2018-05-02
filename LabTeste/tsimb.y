@@ -93,16 +93,16 @@ void NaoDeclarado (char *);
 /* Declaracao dos atributos dos tokens e dos nao-terminais */
 
 %token		<string>		ID
-%token		<carac>		    CHARCT
-%token		<valor>		INTCT
+%token		<string>	    CHARCT
+%token		<valor>			INTCT
 %token		<valfloat>	    FLOATCT
 %token		<string>		STRING
 %token		OR
 %token		AND
 %token		NOT
-%token		<atr>			RELOP
-%token		<atr>			ADOP
-%token		<atr>			MULTOP
+%token		<string>		RELOP
+%token		<string>		ADOP
+%token		<string>		MULTOP
 %token		NEG
 %token		OPPAR
 %token		CLPAR
@@ -159,6 +159,7 @@ Type			: 	INT  {printf ("int ");}
                 |   FLOAT  {printf ("float ");}
                 |   CHAR  {printf ("char ");}
                 |   LOGIC  {printf ("logic ");}
+				| 	VOID {printf("void ");}
                 ;
 ElemList    	:	Elem  |  ElemList  COMMA  {printf (", ");}  Elem
                 ;
@@ -180,7 +181,7 @@ ModHeader		:	Type ID OPPAR {printf("(");} CLPAR {printf(")");}
 				|	Type ID OPPAR {printf("(");} ParamList CLPAR {printf(")");}
 				;
 ParamList		:	Parameter
-				|	ParamList COMMA {printf(",");} Parameter
+				|	ParamList COMMA {printf(", ");} Parameter
 				;
 Parameter		:	Type ID
 				;
@@ -196,11 +197,46 @@ CompStat		:   OPBRACE  {printf ("{\n");}  StatList  CLBRACE
 StatList		:
                 |   StatList  Statement
                 ;
-Statement   	:   CompStat  |  AssignStat
+Statement   	:   CompStat  |  IfStat | WhileStat | RepeatStat | ForStat | ReadStat | WriteStat | AssignStat | CallStat | ReturnStat | SCOLON {printf(";");}
                 ;
+IfStat			:	IF {printf("if ");} Expression THEN {printf("then ");} Statement ElseStat
+				;
+ElseStat		:
+				|	ELSE {printf("else ");} Statement
+				;
+WhileStat		:	WHILE {printf("while ");} Expression DO {printf("do ");} Statement
+				;
+RepeatStat		: 	REPEAT {printf("repeat ");} Statement WHILE {printf("while ");} Expression SCOLON {printf(";\n");} 
+				;
+ForStat			:	FOR {printf("for ");} Variable OPPAR {printf("(");} AuxExpr4 COLON {printf(":");} Expression COLON {printf(":");} AuxExpr4 CLPAR {printf(")");} Statement
+				;
+ReadStat		:	READ OPPAR {printf("read(");} ReadList CLPAR SCOLON {printf(");\n");}
+				;
+ReadList		:	Variable
+				|	ReadList COMMA {printf(", ");} Variable
+				;
+WriteStat		:	WRITE OPPAR {printf("write(");} WriteList CLPAR SCOLON {printf(");\n");}
+				;
+WriteList		:	WriteElem
+				|	WriteList COMMA {printf(", ");} WriteElem
+				;
+WriteElem		: 	STRING {printf("%s", $1);}
+				|	Expression
+				;
+CallStat		:	CALL ID OPPAR {printf("call %s(", $2);} Arguments CLPAR SCOLON {printf(");\n");}
+				;
+Arguments		:
+				|	ExprList
+				;
+ReturnStat		:	RETURN SCOLON {printf("return;\n");}
+				|	RETURN {printf("return ");} Expression SCOLON {printf(";\n");}
+				;
 AssignStat  	:   Variable  ASSIGN  {printf (":= ");}  Expression  SCOLON
                     {printf (";\n");}
                 ;
+ExprList		:	Expression
+				|	ExprList COMMA {printf(", ");} Expression
+				;
 Expression  	:   AuxExpr1  |  Expression  OR  {printf ("|| ");}  AuxExpr1
                 ;
 AuxExpr1    	:   AuxExpr2  |  AuxExpr1  AND  {printf ("&& ");}  AuxExpr2
@@ -209,44 +245,61 @@ AuxExpr2    	:   AuxExpr3  |  NOT  {printf ("! ");}  AuxExpr3
                 ;
 AuxExpr3    	:   AuxExpr4
                 |   AuxExpr4  RELOP  {
-                        switch ($2) {
+                        /*switch ($2) {
                             case LT: printf ("< "); break;
                             case LE: printf ("<= "); break;
                             case EQ: printf ("= "); break;
                             case NE: printf ("!= "); break;
                             case GT: printf ("> "); break;
                             case GE: printf (">= "); break;
-                        }
+                        }*/
+						printf("%s ", $2);
                     }  AuxExpr4
                 ;
 AuxExpr4    	:   Term
                 |   AuxExpr4  ADOP  {
-                        switch ($2) {
+                        /*switch ($2) {
                             case MAIS: printf ("+ "); break;
                             case MENOS: printf ("- "); break;
-                        }
+                        }*/
+						printf("%s ", $2);
                     }  Term
                 ;
 Term  	    	:   Factor
                 |   Term  MULTOP  {
-                        switch ($2) {
+                        /*switch ($2) {
                             case MULT: printf ("* "); break;
                             case DIV: printf ("/ "); break;
                             case RESTO: printf ("%% "); break;
-                        }
+                        }*/
+						printf("%s ", $2);
                     }  Factor
                 ;
 Factor		    :   Variable
                 |   INTCT  {printf ("%d ", $1);}
                 |   FLOATCT  {printf ("%g ", $1);}
-                |   CHARCT  {printf ("\'%c\' ", $1);}
+                |   CHARCT  {printf ("%s ", $1);}
             	|   TRUE  {printf ("true ");}
             	|   FALSE  {printf ("false ");}
             	|   NEG  {printf ("~ ");}  Factor
             	|   OPPAR  {printf ("( ");}  Expression  CLPAR  {printf (") ");}
+				| 	FuncCall
                 ;
-Variable		:   ID  {printf ("%s ", $1);}
+Variable		:   ID  {printf ("%s ", $1);} Subscripts
                 ;
+Subscripts		:
+				|	OPBRAK {printf("[");} SubscrList CLBRAK	{printf("]");}
+				;
+SubscrList		:	AuxExpr4
+				|	TwoSubscr
+				|	ThreeSubscr
+				;
+TwoSubscr		:	AuxExpr4 COMMA {printf(", ");} AuxExpr4
+				;
+ThreeSubscr		:	TwoSubscr COMMA {printf(", ");} AuxExpr4
+				;
+FuncCall		:	ID OPPAR {printf("%s(",$1);} Arguments CLPAR {printf(")");}
+				;
 %%
 
 /* Inclusao do analisador lexico  */

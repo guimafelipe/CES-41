@@ -9,7 +9,7 @@ l_maiuscula	[A-Z]
 l_minuscula	[a-z]
 letra		{l_maiuscula}|{l_minuscula}
 intct		{digito}+
-carac1		\\.|[\\^']
+carac1		\\.|[^\\']
 charct	 	'{carac1}'
 floatct		{digito}+\.{digito}*(([Ee][+-]?{digito}+))?
 carac2		\\.|[^\\\"]
