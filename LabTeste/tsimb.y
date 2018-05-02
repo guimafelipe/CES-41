@@ -145,7 +145,7 @@ void NaoDeclarado (char *);
 	para alguma estetica, ha mudanca de linha       */
 
 Prog			:	ID  OPTRIP  {printf ("%s {{{\n", $1);}
-                    Decls  Stats  CLTRIP  {printf ("}}}\n");}
+                    Decls  ModList MainMod CLTRIP  {printf ("}}}\n");}
                 ;
 Decls 		    :
                 |   VAR  OPBRACE  {printf ("var {\n");}  DeclList
@@ -170,6 +170,23 @@ Dims			:
 DimList			:	INTCT  {printf ("%d", $1);} 
 				|	INTCT COMMA INTCT {printf("%d, %d", $1, $3);} 
 				|	INTCT COMMA INTCT COMMA INTCT {printf("%d, %d, %d", $1, $3, $5);}
+				;
+ModList			:
+				|	ModList Module
+				;
+Module			:	ModHeader ModBody
+				;
+ModHeader		:	Type ID OPPAR {printf("(");} CLPAR {printf(")");}
+				|	Type ID OPPAR {printf("(");} ParamList CLPAR {printf(")");}
+				;
+ParamList		:	Parameter
+				|	ParamList COMMA {printf(",");} Parameter
+				;
+Parameter		:	Type ID
+				;
+ModBody			:	Decls Stats
+				;
+MainMod			:	MAIN ModBody
 				;
 Stats       	:   STATEMENTS  {printf ("statements ");}  CompStat
                 ;
