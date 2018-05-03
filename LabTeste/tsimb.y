@@ -39,45 +39,10 @@
 #define	VERDADE		1
 #define	FALSO		0
 
-/*  Strings para nomes dos tipos de identificadores  */
-
-char *nometipid[3] = {" ", "IDPROG", "IDVAR"};
-
-/*  Strings para nomes dos tipos de variaveis  */
-
-char *nometipvar[5] = {"NAOVAR",
-	"INTEIRO", "LOGICO", "REAL", "CARACTERE"
-};
-
-/*    Declaracoes para a tabela de simbolos     */
-
-typedef struct celsimb celsimb;
-typedef celsimb *simbolo;
-struct celsimb {
-	char *cadeia;
-	int tid, tvar;
-	char inic, ref;
-	simbolo prox;
-};
-
-/*  Variaveis globais para a tabela de simbolos e analise semantica */
-
-simbolo tabsimb[NCLASSHASH];
-simbolo simb;
-
-/*
-	Prototipos das funcoes para a tabela de simbolos
-    	e analise semantica
- */
-
-void InicTabSimb (void);
-void ImprimeTabSimb (void);
-simbolo InsereSimb (char *, int, int);
-int hash (char *);
-simbolo ProcuraSimb (char *);
-void DeclaracaoRepetida (char *);
-void TipoInadequado (char *);
-void NaoDeclarado (char *);
+int tab = 0;
+int fromElse = 0;
+int fromIf = 0;
+void tabular(void);
 
 %}
 
@@ -148,12 +113,12 @@ Prog			:	ID  OPTRIP  {printf ("%s {{{\n", $1);}
                     Decls  ModList MainMod CLTRIP  {printf ("}}}\n");}
                 ;
 Decls 		    :
-                |   VAR  OPBRACE  {printf ("var {\n");}  DeclList
-                    CLBRACE  {printf ("}\n");}
+                |   VAR  OPBRACE  {tabular();tab++;printf ("var {\n");}  DeclList
+                    CLBRACE  {tab--;tabular();printf ("}\n");}
                 ;
 DeclList		:	Declaration  |  DeclList  Declaration
                 ;
-Declaration 	:	Type  ElemList  SCOLON  {printf (";\n");}
+Declaration 	:	{tabular();} Type  ElemList  SCOLON  {printf (";\n");}
                 ;
 Type			: 	INT  {printf ("int ");}
                 |   FLOAT  {printf ("float ");}
@@ -189,33 +154,33 @@ ModBody			:	Decls Stats
 				;
 MainMod			:	MAIN ModBody
 				;
-Stats       	:   STATEMENTS  {printf ("statements ");}  CompStat
+Stats       	:   STATEMENTS  {tabular();printf ("statements ");}  CompStat 
                 ;
-CompStat		:   OPBRACE  {printf ("{\n");}  StatList  CLBRACE
-                    {printf ("}\n");}
+CompStat		:   OPBRACE  {printf ("{\n");tab++;} StatList  CLBRACE
+                    {tab--;tabular();printf ("}\n");}
                 ;
 StatList		:
                 |   StatList  Statement
                 ;
-Statement   	:   CompStat  |  IfStat | WhileStat | RepeatStat | ForStat | ReadStat | WriteStat | AssignStat | CallStat | ReturnStat | SCOLON {printf(";");}
+Statement   	:   CompStat  |  IfStat | WhileStat | RepeatStat | ForStat | ReadStat | WriteStat | AssignStat | CallStat | ReturnStat | SCOLON {tabular();printf(";");}
                 ;
-IfStat			:	IF {printf("if ");} Expression THEN {printf("then ");} Statement ElseStat
+IfStat			:	IF {if(!fromElse)tabular();printf("if ");fromIf = 1;} Expression THEN {printf("then ");} Statement {fromIf = 0;}  ElseStat
 				;
 ElseStat		:
-				|	ELSE {printf("else ");} Statement
+				|	ELSE {tabular();printf("else ");fromElse = 1;} Statement {fromElse = 0;}
 				;
-WhileStat		:	WHILE {printf("while ");} Expression DO {printf("do ");} Statement
+WhileStat		:	WHILE {tabular();printf("while ");} Expression DO {printf("do ");} Statement
 				;
-RepeatStat		: 	REPEAT {printf("repeat ");} Statement WHILE {printf("while ");} Expression SCOLON {printf(";\n");} 
+RepeatStat		: 	REPEAT {tabular();printf("repeat ");} Statement WHILE {tabular();printf("while ");} Expression SCOLON {printf(";\n");} 
 				;
-ForStat			:	FOR {printf("for ");} Variable OPPAR {printf("(");} AuxExpr4 COLON {printf(":");} Expression COLON {printf(":");} AuxExpr4 CLPAR {printf(")");} Statement
+ForStat			:	FOR {tabular();printf("for ");} Variable OPPAR {printf("(");} AuxExpr4 COLON {printf(":");} Expression COLON {printf(":");} AuxExpr4 CLPAR {printf(")");} Statement
 				;
-ReadStat		:	READ OPPAR {printf("read(");} ReadList CLPAR SCOLON {printf(");\n");}
+ReadStat		:	READ OPPAR {tabular();printf("read(");} ReadList CLPAR SCOLON {printf(");\n");}
 				;
 ReadList		:	Variable
 				|	ReadList COMMA {printf(", ");} Variable
 				;
-WriteStat		:	WRITE OPPAR {printf("write(");} WriteList CLPAR SCOLON {printf(");\n");}
+WriteStat		:	WRITE OPPAR {tabular();printf("write(");} WriteList CLPAR SCOLON {printf(");\n");}
 				;
 WriteList		:	WriteElem
 				|	WriteList COMMA {printf(", ");} WriteElem
@@ -223,15 +188,15 @@ WriteList		:	WriteElem
 WriteElem		: 	STRING {printf("%s", $1);}
 				|	Expression
 				;
-CallStat		:	CALL ID OPPAR {printf("call %s(", $2);} Arguments CLPAR SCOLON {printf(");\n");}
+CallStat		:	CALL ID OPPAR {tabular();printf("call %s(", $2);} Arguments CLPAR SCOLON {printf(");\n");}
 				;
 Arguments		:
 				|	ExprList
 				;
-ReturnStat		:	RETURN SCOLON {printf("return;\n");}
-				|	RETURN {printf("return ");} Expression SCOLON {printf(";\n");}
+ReturnStat		:	RETURN SCOLON {tabular();printf("return;\n");}
+				|	RETURN {tabular();printf("return ");} Expression SCOLON {printf(";\n");}
 				;
-AssignStat  	:   Variable  ASSIGN  {printf (":= ");}  Expression  SCOLON
+AssignStat  	:   {if(!fromElse)tabular();} Variable  ASSIGN  {printf (":= ");}  Expression  SCOLON
                     {printf (";\n");}
                 ;
 ExprList		:	Expression
@@ -306,86 +271,9 @@ FuncCall		:	ID OPPAR {printf("%s(",$1);} Arguments CLPAR {printf(")");}
 
 #include "lex.yy.c"
 
-/*  InicTabSimb: Inicializa a tabela de simbolos   */
-
-void InicTabSimb () {
+void tabular() {
 	int i;
-	for (i = 0; i < NCLASSHASH; i++)
-		tabsimb[i] = NULL;
+	for(i = 1; i <= tab; i++){
+		printf("\t");
+	}
 }
-
-/*
-	ProcuraSimb (cadeia): Procura cadeia na tabela de simbolos;
-	Caso ela ali esteja, retorna um ponteiro para sua celula;
-	Caso contrario, retorna NULL.
- */
-
-simbolo ProcuraSimb (char *cadeia) {
-	simbolo s; int i;
-	i = hash (cadeia);
-	for (s = tabsimb[i]; (s!=NULL) && strcmp(cadeia, s->cadeia);
-		s = s->prox);
-	return s;
-}
-
-/*
-	InsereSimb (cadeia, tid, tvar): Insere cadeia na tabela de
-	simbolos, com tid como tipo de identificador e com tvar como
-	tipo de variavel; Retorna um ponteiro para a celula inserida
- */
-
-simbolo InsereSimb (char *cadeia, int tid, int tvar) {
-	int i; simbolo aux, s;
-	i = hash (cadeia); aux = tabsimb[i];
-	s = tabsimb[i] = (simbolo) malloc (sizeof (celsimb));
-	s->cadeia = (char*) malloc ((strlen(cadeia)+1) * sizeof(char));
-	strcpy (s->cadeia, cadeia);
-	s->tid = tid;		s->tvar = tvar;
-	s->inic = FALSO;	s->ref = FALSO;
-	s->prox = aux;	return s;
-}
-
-/*
-	hash (cadeia): funcao que determina e retorna a classe
-	de cadeia na tabela de simbolos implementada por hashing
- */
-
-int hash (char *cadeia) {
-	int i, h;
-	for (h = i = 0; cadeia[i]; i++) {h += cadeia[i];}
-	h = h % NCLASSHASH;
-	return h;
-}
-
-/* ImprimeTabSimb: Imprime todo o conteudo da tabela de simbolos  */
-
-void ImprimeTabSimb () {
-	int i; simbolo s;
-	printf ("\n\n   TABELA  DE  SIMBOLOS:\n\n");
-	for (i = 0; i < NCLASSHASH; i++)
-		if (tabsimb[i]) {
-			printf ("Classe %d:\n", i);
-			for (s = tabsimb[i]; s!=NULL; s = s->prox){
-				printf ("  (%s, %s", s->cadeia,  nometipid[s->tid]);
-				if (s->tid == IDVAR)
-					printf (", %s, %d, %d",
-						nometipvar[s->tvar], s->inic, s->ref);
-				printf(")\n");
-			}
-		}
-}
-
-/*  Mensagens de erros semanticos  */
-
-void DeclaracaoRepetida (char *s) {
-	printf ("\n\n***** Declaracao Repetida: %s *****\n\n", s);
-}
-
-void NaoDeclarado (char *s) {
-    printf ("\n\n***** Identificador Nao Declarado: %s *****\n\n", s);
-}
-
-void TipoInadequado (char *s) {
-    printf ("\n\n***** Identificador de Tipo Inadequado: %s *****\n\n", s);
-}
-
