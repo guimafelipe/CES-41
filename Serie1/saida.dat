@@ -1,0 +1,29 @@
+Analise lexica!
+
+2 | ID | programa1guima19
+5 | OPBRAK | {
+2 | ID | com1
+8 | EQ | =
+2 | ID | x2
+7 | ADD | +
+3 | CTE | 19
+7 | ADD | +
+2 | ID | oi
+4 | SCOLON | ;
+2 | ID | com2
+8 | EQ | =
+2 | ID | pi
+4 | SCOLON | ;
+2 | ID | comando3xD
+8 | EQ | =
+9 | OPPAR | (
+3 | CTE | 19
+7 | ADD | +
+3 | CTE | 2
+10 | CLPAR | )
+7 | ADD | +
+3 | CTE | 20
+4 | SCOLON | ;
+6 | CLBRAK | }
+0 | FINAL | FINAL
+Análise encerrada
