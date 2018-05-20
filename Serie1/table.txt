@@ -1,0 +1,37 @@
+			ID CTE ADD EQ OPPAR CLPAR OPBRAK CLBRAK SCOLON
+Prog
+CmdComp
+ListCmd
+LCaux
+Comando
+Expressao
+Eaux
+Termo
+
+Primeiros:
+ADD - +
+EQ - =
+SCOLON - ;
+OPBRAK - {
+CLBRAK - }
+OPPAR - (
+CLPAR - )
+ID - ID
+PROG - ID
+CmdCmp - {
+ListCmd - ID
+LCaux - eps, ID
+Comando - ID
+Expressao - (, ID, CTE
+Eaux - eps, +
+Termo - (, ID, CTE
+
+Seguintes:
+Prog 		- $
+CmdComp		- 
+ListCmd		- }
+LCaux		- }
+Comando		- ID, }
+Expressao	- ;, )
+Eaux		- ;, )
+Termo		- +, ;, )
