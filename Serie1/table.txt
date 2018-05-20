@@ -1,12 +1,16 @@
-			ID CTE ADD EQ OPPAR CLPAR OPBRAK CLBRAK SCOLON
-Prog
-CmdComp
-ListCmd
-LCaux
-Comando
-Expressao
-Eaux
-Termo
+As produções são consideradas numeradas de I à VIII de acordo com a ordem em que aparecem no arquivo Word da Série			
+
+Tabela da Produções
+
+			ID   CTE   ADD   EQ   OPPAR   CLPAR   OPBRAK   CLBRAK   SCOLON
+Prog        I         
+CmdComp                                           II
+ListCmd     III
+LCaux       IVb                                            IVa
+Comando    	V
+Expressao   VI   VI               VI
+Eaux        VIIa       VIIb                                         VIIa
+Termo       VII  VIII             VII
 
 Primeiros:
 ADD - +
