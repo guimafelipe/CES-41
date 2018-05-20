@@ -2,15 +2,15 @@ As produções são consideradas numeradas de I à VIII de acordo com a ordem em
 
 Tabela da Produções
 
-			ID   CTE   ADD   EQ   OPPAR   CLPAR   OPBRAK   CLBRAK   SCOLON
+			ID    CTE   ADD   EQ   OPPAR   CLPAR   OPBRAK   CLBRAK   SCOLON
 Prog        I         
-CmdComp                                           II
+CmdComp                                            II
 ListCmd     III
-LCaux       IVb                                            IVa
+LCaux       IVb                                             IVa
 Comando    	V
-Expressao   VI   VI               VI
-Eaux        VIIa       VIIb                                         VIIa
-Termo       VII  VIII             VII
+Expressao   VI    VI               VI
+Eaux        VIIa        VIIb                                         VIIa
+Termo       VIIIb VIIIb            VIIIa
 
 Primeiros:
 ADD - +
