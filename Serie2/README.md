@@ -2,11 +2,13 @@
 
 ## Questão 1
 
-A tabela está apresentada a seguir:
+### Entrada
 
-Entrada: `id*((id + id)*(id+id+id))`
+`id*((id + id)*(id+id+id))`
 
 ----
+
+### Tabela
 
 |Pilha|Entrada|Ação|Goto|
 |---|---|---|---|
@@ -57,6 +59,7 @@ Entrada: `id*((id + id)*(id+id+id))`
 
 ## Questão 2
 
+### Gramática:
 ```
 Prog -> ID { ListDecls }
 ListDecls -> Decl | ListDecls Decl
@@ -64,6 +67,26 @@ Decl -> Tipo ListId
 Tipo ->int | real
 ListId -> ID | ListId , ID
 ```
+
+### Passo 1 - AFND
+
+#### Itens de Produção
+
+|Produção | Itens|
+|---|---|
+|Prog'->Prog |Prog'->.Prog Prog'->Prog. |
+|Prog->ID{ListDecls} | Prog->.ID{ListDecls} Prog->ID.{ListDecls} Prog->ID{.ListDecls} Prog->ID{ListDecls.} Prog->ID{ListDecls}.|
+|ListDecls->Decl|ListDecls->.Decl ListDecls->Decl.|
+|ListDecls->ListDecls Decl|ListDecls->.ListDecls Decl ListDecls->ListDecls.Decl ListDecls->ListDecls Decl.|
+|Decl->Tipo ListId|Decl->.Tipo ListId Decl->Tipo.ListId Decl->Tipo ListId.|
+|Tipo->int|Tipo->.int Tipo->int.|
+|Tipo->real|Tipo->.real Tipo->real.|
+|ListId->ID|ListId->.ID ListId->ID.|
+|ListId->ListId,ID|ListId->.ListId,ID ListId->ListId.,ID ListId->ListId,.ID ListId->ListId,ID.|
+
+#### Autômato não determinístico
+
+"Image goes here"
 
 ## Questão 3
 
