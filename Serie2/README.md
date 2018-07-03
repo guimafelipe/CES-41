@@ -164,5 +164,23 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 
 ## Questão 3
 
-In construction...
+### Letra a
+
+Ocorreram três conflitos de shift/reduce relacionados à estados que antecedem um simbolo **MAIS**.
+Por exemplo, se temos `ID = E` e o átomo seguinte é um `MAIS`, não sabemos se devemos reduzir o `ID = E` para um `E` e shiftar ou consideramos o `E` no final para shiftar com o átomo.
+O arquivo gerado encontra-se aqui.
+
+### Letra b
+
+Para tirar o conflito, usaremos a informação da precedência mostrada no enunciado da questão.
+Com isso, nossa linguagem passa a ser:
+
+```
+E	:	WHILE E DO E
+	|	ID EQ E
+	|	E MAIS E
+	|	ID
+	;
+```
+
 
