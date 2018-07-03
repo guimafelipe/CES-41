@@ -101,7 +101,7 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 #### Tabela de Seguintes
 
 |Produção | Seguintes|
-|---|---|
+|---|:-:|
 |Prog| $|
 |ListDecls |} int real| 
 |Decl| } int real|
@@ -125,7 +125,7 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 ##### Tabela das Transições
 
 |Estado|ID|{|}|,|int|real|$|
-|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|--:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |1|d2| | | | | | |
 |2| |d3| | | | | |
 |3| | | | |d12|d13| |
@@ -143,8 +143,8 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 
 ##### Tabela de Goto's
 
-|Estado|Prog|ListDecsl|Decl|Tipo|ListId|
-|---|:-:|:-:|:-:|:-:|:-:|
+|Estado|Prog|ListDecls|Decl|Tipo|ListId|
+|--:|:-:|:-:|:-:|:-:|:-:|
 |1|14| | | | | |
 |2| | | | | |
 |3| |4|6|7| |
