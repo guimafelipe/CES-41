@@ -1,0 +1,156 @@
+Terminais sem uso na gramática
+
+   INVAL
+
+
+Estado 8 conflitos: 1 de deslocamento/redução
+Estado 10 conflitos: 1 de deslocamento/redução
+Estado 11 conflitos: 1 de deslocamento/redução
+
+
+Gramática
+
+    0 $accept: E $end
+
+    1 E: WHILE E DO E
+    2  | ID EQ E
+    3  | E MAIS E
+    4  | ID
+
+
+Terminais, com as regras onde eles aparecem
+
+$end (0) 0
+error (256)
+ID (258) 2 4
+DO (259) 1
+WHILE (260) 1
+EQ (261) 2
+MAIS (262) 3
+INVAL (263)
+
+
+Não terminais com as regras onde eles aparecem
+
+$accept (9)
+    à esquerda: 0
+E (10)
+    à esquerda: 1 2 3 4, à direita: 0 1 2 3
+
+
+Estado 0
+
+    0 $accept: . E $end
+
+    ID     deslocar, e ir ao estado 1
+    WHILE  deslocar, e ir ao estado 2
+
+    E  ir ao estado 3
+
+
+Estado 1
+
+    2 E: ID . EQ E
+    4  | ID .
+
+    EQ  deslocar, e ir ao estado 4
+
+    $padrão  reduzir usando a regra 4 (E)
+
+
+Estado 2
+
+    1 E: WHILE . E DO E
+
+    ID     deslocar, e ir ao estado 1
+    WHILE  deslocar, e ir ao estado 2
+
+    E  ir ao estado 5
+
+
+Estado 3
+
+    0 $accept: E . $end
+    3 E: E . MAIS E
+
+    $end  deslocar, e ir ao estado 6
+    MAIS  deslocar, e ir ao estado 7
+
+
+Estado 4
+
+    2 E: ID EQ . E
+
+    ID     deslocar, e ir ao estado 1
+    WHILE  deslocar, e ir ao estado 2
+
+    E  ir ao estado 8
+
+
+Estado 5
+
+    1 E: WHILE E . DO E
+    3  | E . MAIS E
+
+    DO    deslocar, e ir ao estado 9
+    MAIS  deslocar, e ir ao estado 7
+
+
+Estado 6
+
+    0 $accept: E $end .
+
+    $padrão  aceitar
+
+
+Estado 7
+
+    3 E: E MAIS . E
+
+    ID     deslocar, e ir ao estado 1
+    WHILE  deslocar, e ir ao estado 2
+
+    E  ir ao estado 10
+
+
+Estado 8
+
+    2 E: ID EQ E .
+    3  | E . MAIS E
+
+    MAIS  deslocar, e ir ao estado 7
+
+    MAIS      [reduzir usando a regra 2 (E)]
+    $padrão  reduzir usando a regra 2 (E)
+
+
+Estado 9
+
+    1 E: WHILE E DO . E
+
+    ID     deslocar, e ir ao estado 1
+    WHILE  deslocar, e ir ao estado 2
+
+    E  ir ao estado 11
+
+
+Estado 10
+
+    3 E: E . MAIS E
+    3  | E MAIS E .
+
+    MAIS  deslocar, e ir ao estado 7
+
+    MAIS      [reduzir usando a regra 3 (E)]
+    $padrão  reduzir usando a regra 3 (E)
+
+
+Estado 11
+
+    1 E: WHILE E DO E .
+    3  | E . MAIS E
+
+    MAIS  deslocar, e ir ao estado 7
+
+    MAIS      [reduzir usando a regra 1 (E)]
+    $padrão  reduzir usando a regra 1 (E)
