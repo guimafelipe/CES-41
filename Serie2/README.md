@@ -61,11 +61,11 @@
 
 ### Gramática:
 ```
-Prog -> ID { ListDecls }
-ListDecls -> Decl | ListDecls Decl
-Decl -> Tipo ListId
-Tipo ->int | real
-ListId -> ID | ListId , ID
+1) Prog -> ID { ListDecls }
+2) ListDecls -> Decl | ListDecls Decl
+3) Decl -> Tipo ListId
+4) Tipo ->int | real
+5) ListId -> ID | ListId , ID
 ```
 
 ### Passo 1 - AFND
@@ -107,6 +107,58 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 |Decl| } int real|
 |Tipo| ID|
 |ListId |, } int real|
+
+#### Tabela SLR
+
+##### Produções numeradas
+
+```
+1) Prog -> ID { ListDecls }
+2) ListDecls -> Decl
+3) ListDecls -> ListDecls Decl
+4) Decl -> Tipo ListId
+5) Tipo -> int
+6) Tipo -> real
+7) ListId -> ID
+8) ListId -> ListId , ID
+```
+##### Tabela das Transições
+
+|Estado|ID|{|}|,|int|real|$|
+|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|1|d2| | | | | | |
+|2| |d3| | | | | |
+|3| | | | |d12|d13| |
+|4| | |d5| |d12|d13| |
+|5| | | | | | |r1|
+|6| | |r3| |r3|r3| |
+|7|d8| | | | | | |
+|8| | |r7|r7|r7|r7| |
+|9| | |r4|d10|r4|r4| |
+|10|d11| | | | | | |
+|11| | |r8|r8|r8|r8| |
+|12|r5| | | | | | |
+|13|r6| | | | | | |
+|14| | | | | | |aceitar|
+
+##### Tabela de Goto's
+
+|Estado|Prog|ListDecsl|Decl|Tipo|ListId|
+|---|:-:|:-:|:-:|:-:|:-:|
+|1|14| | | | | |
+|2| | | | | |
+|3| |4|6|7| |
+|4| | |6|7| |
+|5| | | | | |
+|6| | | | | |
+|7| | | | |9|
+|8| | | | | |
+|9| | | | | |
+|10| | | | | |
+|11| | | | | |
+|12| | | | | |
+|13| | | | | |
+|14| | | | | |
 
 ## Questão 3
 
