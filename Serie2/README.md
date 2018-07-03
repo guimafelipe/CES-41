@@ -168,6 +168,7 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 
 Ocorreram três conflitos de shift/reduce relacionados à estados que antecedem um simbolo **MAIS**.
 Por exemplo, se temos `ID = E` e o átomo seguinte é um `MAIS`, não sabemos se devemos reduzir o `ID = E` para um `E` e shiftar ou consideramos o `E` no final para shiftar com o átomo.
+A implementação dessa questão encontra-se aqui.
 O arquivo gerado encontra-se aqui.
 
 ### Letra b
@@ -177,10 +178,26 @@ Com isso, nossa linguagem passa a ser:
 
 ```
 E	:	WHILE E DO E
-	|	ID EQ E
-	|	E MAIS E
+	|	Exp
+	;
+
+Exp	:	ID EQ Term
+	|	Term
+	;
+
+Term:	Term + ID
 	|	ID
 	;
 ```
 
+Agora, nossa linguagem não tem nenhum conflito e respeita as regras de associatividade  e precedência estipuladas.
 
+A implementação dessa questão pode ser encontrada aqui.
+
+A linguagem foi testada para três casos testes, que estão a seguir:
+
+Caso 1
+Caso 2
+Caso 3
+
+Onde não ocorreram erros e ela foi capaz de reescrever o código do caso teste.

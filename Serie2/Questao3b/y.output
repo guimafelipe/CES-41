@@ -3,30 +3,29 @@ Terminais sem uso na gramática
    INVAL
 
 
-Estado 8 conflitos: 1 de deslocamento/redução
-Estado 10 conflitos: 1 de deslocamento/redução
-Estado 11 conflitos: 1 de deslocamento/redução
-
-
 Gramática
 
     0 $accept: E $end
 
     1 E: WHILE E DO E
-    2  | ID EQ E
-    3  | E MAIS E
-    4  | ID
+    2  | Exp
+
+    3 Exp: ID EQ Term
+    4    | Term
+
+    5 Term: Term MAIS ID
+    6     | ID
 
 
 Terminais, com as regras onde eles aparecem
 
 $end (0) 0
 error (256)
-ID (258) 2 4
+ID (258) 3 5 6
 DO (259) 1
 WHILE (260) 1
-EQ (261) 2
-MAIS (262) 3
+EQ (261) 3
+MAIS (262) 5
 INVAL (263)
 
 
@@ -35,7 +34,11 @@ Não terminais com as regras onde eles aparecem
 $accept (9)
     à esquerda: 0
 E (10)
-    à esquerda: 1 2 3 4, à direita: 0 1 2 3
+    à esquerda: 1 2, à direita: 0 1
+Exp (11)
+    à esquerda: 3 4, à direita: 2
+Term (12)
+    à esquerda: 5 6, à direita: 3 4 5
 
 
 Estado 0
@@ -45,17 +48,19 @@ Estado 0
     ID     deslocar, e ir ao estado 1
     WHILE  deslocar, e ir ao estado 2
 
-    E  ir ao estado 3
+    E     ir ao estado 3
+    Exp   ir ao estado 4
+    Term  ir ao estado 5
 
 
 Estado 1
 
-    2 E: ID . EQ E
-    4  | ID .
+    3 Exp: ID . EQ Term
+    6 Term: ID .
 
-    EQ  deslocar, e ir ao estado 4
+    EQ  deslocar, e ir ao estado 6
 
-    $padrão  reduzir usando a regra 4 (E)
+    $padrão  reduzir usando a regra 6 (Term)
 
 
 Estado 2
@@ -65,92 +70,103 @@ Estado 2
     ID     deslocar, e ir ao estado 1
     WHILE  deslocar, e ir ao estado 2
 
-    E  ir ao estado 5
+    E     ir ao estado 7
+    Exp   ir ao estado 4
+    Term  ir ao estado 5
 
 
 Estado 3
 
     0 $accept: E . $end
-    3 E: E . MAIS E
 
-    $end  deslocar, e ir ao estado 6
-    MAIS  deslocar, e ir ao estado 7
+    $end  deslocar, e ir ao estado 8
 
 
 Estado 4
 
-    2 E: ID EQ . E
+    2 E: Exp .
 
-    ID     deslocar, e ir ao estado 1
-    WHILE  deslocar, e ir ao estado 2
-
-    E  ir ao estado 8
+    $padrão  reduzir usando a regra 2 (E)
 
 
 Estado 5
 
-    1 E: WHILE E . DO E
-    3  | E . MAIS E
+    4 Exp: Term .
+    5 Term: Term . MAIS ID
 
-    DO    deslocar, e ir ao estado 9
-    MAIS  deslocar, e ir ao estado 7
+    MAIS  deslocar, e ir ao estado 9
+
+    $padrão  reduzir usando a regra 4 (Exp)
 
 
 Estado 6
+
+    3 Exp: ID EQ . Term
+
+    ID  deslocar, e ir ao estado 10
+
+    Term  ir ao estado 11
+
+
+Estado 7
+
+    1 E: WHILE E . DO E
+
+    DO  deslocar, e ir ao estado 12
+
+
+Estado 8
 
     0 $accept: E $end .
 
     $padrão  aceitar
 
 
-Estado 7
-
-    3 E: E MAIS . E
-
-    ID     deslocar, e ir ao estado 1
-    WHILE  deslocar, e ir ao estado 2
-
-    E  ir ao estado 10
-
-
-Estado 8
-
-    2 E: ID EQ E .
-    3  | E . MAIS E
-
-    MAIS  deslocar, e ir ao estado 7
-
-    MAIS      [reduzir usando a regra 2 (E)]
-    $padrão  reduzir usando a regra 2 (E)
-
-
 Estado 9
+
+    5 Term: Term MAIS . ID
+
+    ID  deslocar, e ir ao estado 13
+
+
+Estado 10
+
+    6 Term: ID .
+
+    $padrão  reduzir usando a regra 6 (Term)
+
+
+Estado 11
+
+    3 Exp: ID EQ Term .
+    5 Term: Term . MAIS ID
+
+    MAIS  deslocar, e ir ao estado 9
+
+    $padrão  reduzir usando a regra 3 (Exp)
+
+
+Estado 12
 
     1 E: WHILE E DO . E
 
     ID     deslocar, e ir ao estado 1
     WHILE  deslocar, e ir ao estado 2
 
-    E  ir ao estado 11
+    E     ir ao estado 14
+    Exp   ir ao estado 4
+    Term  ir ao estado 5
 
 
-Estado 10
+Estado 13
 
-    3 E: E . MAIS E
-    3  | E MAIS E .
+    5 Term: Term MAIS ID .
 
-    MAIS  deslocar, e ir ao estado 7
-
-    MAIS      [reduzir usando a regra 3 (E)]
-    $padrão  reduzir usando a regra 3 (E)
+    $padrão  reduzir usando a regra 5 (Term)
 
 
-Estado 11
+Estado 14
 
     1 E: WHILE E DO E .
-    3  | E . MAIS E
 
-    MAIS  deslocar, e ir ao estado 7
-
-    MAIS      [reduzir usando a regra 1 (E)]
     $padrão  reduzir usando a regra 1 (E)

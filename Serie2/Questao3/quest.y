@@ -8,12 +8,6 @@
 
 /* Definicao dos atributos dos atomos operadores */
 
-#define EQ 		1
-#define WHILE	2
-#define DO		3
-#define MAIS	4
-#define ID 		5
-
 %}
 
 /* Definicao do tipo de yylval e dos atributos dos nao terminais */

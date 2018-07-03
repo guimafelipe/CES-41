@@ -8,11 +8,6 @@
 
 /* Definicao dos atributos dos atomos operadores */
 
-#define EQ 		1
-#define WHILE	2
-#define DO		3
-#define MAIS	4
-#define ID 		5
 
 %}
 
@@ -39,11 +34,17 @@
 	Os terminais sao escritos e, depois de alguns,
 	para alguma estetica, ha mudanca de linha       */
 
-E				:	WHILE  E DO E 
-				|	ID EQ E
-				|	E MAIS E
-				|	ID
-                ;
+E		:	WHILE {printf("while ");}  E DO {printf("do ");} E 
+		|	Exp
+		;
+
+Exp		:	ID EQ {printf("%s = ", $1);} Term
+		|	Term
+		;
+
+Term	:	Term MAIS ID {printf("+ %s ", $3);}
+		|	ID {printf("%s ", $1);}
+		;
 %%
 
 /* Inclusao do analisador lexico  */
