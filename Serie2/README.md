@@ -98,6 +98,8 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 
 ![alt text](https://raw.githubusercontent.com/guimafelipe/CES-41/master/Serie2/Diagrams/AFD.png "AFND")
 
+> Note que na imagem estão representados os números referentes ao estado de cada nó do autômato
+
 #### Tabela de Seguintes
 
 |Produção | Seguintes|
@@ -162,4 +164,5 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 
 ## Questão 3
 
-Lorem Ipsum ...
+In construction...
+
