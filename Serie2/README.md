@@ -168,8 +168,10 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 
 Ocorreram três conflitos de shift/reduce relacionados à estados que antecedem um simbolo **MAIS**.
 Por exemplo, se temos `ID = E` e o átomo seguinte é um `MAIS`, não sabemos se devemos reduzir o `ID = E` para um `E` e shiftar ou consideramos o `E` no final para shiftar com o átomo.
-A implementação dessa questão encontra-se aqui.
-O arquivo gerado encontra-se aqui.
+
+A implementação dessa questão encontra-se [aqui](https://github.com/guimafelipe/CES-41/tree/master/Serie2/Questao3 "Código da letra a").
+
+O arquivo gerado encontra-se [aqui](https://github.com/guimafelipe/CES-41/blob/master/Serie2/Questao3/y.output "Arquivo y.output gerado na letra a").
 
 ### Letra b
 
@@ -185,19 +187,19 @@ Exp	:	ID EQ Term
 	|	Term
 	;
 
-Term:	Term + ID
+Term	:	Term + ID
 	|	ID
 	;
 ```
 
 Agora, nossa linguagem não tem nenhum conflito e respeita as regras de associatividade  e precedência estipuladas.
 
-A implementação dessa questão pode ser encontrada aqui.
+A implementação dessa questão pode ser encontrada [aqui](https://github.com/guimafelipe/CES-41/tree/master/Serie2/Questao3b "Código da letra b").
 
 A linguagem foi testada para três casos testes, que estão a seguir:
 
-Caso 1
-Caso 2
-Caso 3
+* [Caso 1](https://github.com/guimafelipe/CES-41/blob/master/Serie2/Questao3b/entrada1.dat)
+* [Caso 2](https://github.com/guimafelipe/CES-41/blob/master/Serie2/Questao3b/entrada2.dat)
+* [Caso 3](https://github.com/guimafelipe/CES-41/blob/master/Serie2/Questao3b/entrada3.dat)
 
 Onde não ocorreram erros e ela foi capaz de reescrever o código do caso teste.
