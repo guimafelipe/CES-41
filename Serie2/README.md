@@ -105,8 +105,8 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 |Produção | Seguintes|
 |---|:-:|
 |Prog| $|
-|ListDecls |} int real| 
-|Decl| } int real|
+|ListDecls |, } int real| 
+|Decl| , } int real|
 |Tipo| ID|
 |ListId |, } int real|
 
@@ -133,7 +133,7 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 |3| | | | |d12|d13| |
 |4| | |d5| |d12|d13| |
 |5| | | | | | |r1|
-|6| | |r3| |r3|r3| |
+|6| | |r3|r3|r3|r3| |
 |7|d8| | | | | | |
 |8| | |r7|r7|r7|r7| |
 |9| | |r4|d10|r4|r4| |
