@@ -84,9 +84,29 @@ ListId -> ID | ListId , ID
 |ListId->ID|ListId->.ID ListId->ID.|
 |ListId->ListId,ID|ListId->.ListId,ID ListId->ListId.,ID ListId->ListId,.ID ListId->ListId,ID.|
 
-#### Autômato não determinístico
+#### Autômatos construídos
+
+Usou-se o site `draw.io` para a construção das imagens dos grafos abaixo.
+Dentro da pasta `diagrams`, pode-se encontrar os arquivos `.png` e os arquivos `.xml` dos mesmos. 
+Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
+
+##### Autômato não determinístico
 
 "Image goes here"
+
+##### Autômato determinístico
+
+"Other image 
+
+#### Tabela de Seguintes
+
+|Produção | Seguintes|
+|---|---|
+|Prog| $|
+|ListDecls |} int real| 
+|Decl| } int real|
+|Tipo| ID|
+|ListId |, } int real|
 
 ## Questão 3
 
