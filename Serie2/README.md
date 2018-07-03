@@ -142,6 +142,7 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 |12|r5| | | | | | |
 |13|r6| | | | | | |
 |14| | | | | | |aceitar|
+|15| | |r2|r2|r2|r2| |
 
 ##### Tabela de Goto's
 
@@ -149,7 +150,7 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 |--:|:-:|:-:|:-:|:-:|:-:|
 |1|14| | | | | |
 |2| | | | | |
-|3| |4|6|7| |
+|3| |4|15|7| |
 |4| | |6|7| |
 |5| | | | | |
 |6| | | | | |
@@ -161,6 +162,7 @@ Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 |12| | | | | |
 |13| | | | | |
 |14| | | | | |
+|15| | | | | |
 
 ## Questão 3
 
