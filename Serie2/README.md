@@ -91,12 +91,12 @@ Dentro da pasta `diagrams`, pode-se encontrar os arquivos `.png` e os arquivos `
 Pode-se usar os arquivos `.xml` para abrir os diagramas no site supracitado.
 
 ##### Autômato não determinístico
+![alt text](https://raw.githubusercontent.com/guimafelipe/CES-41/master/Serie2/Diagrams/AFND.png "AFND")
 
-"Image goes here"
 
 ##### Autômato determinístico
 
-"Other image 
+![alt text](https://raw.githubusercontent.com/guimafelipe/CES-41/master/Serie2/Diagrams/AFD.png "AFND")
 
 #### Tabela de Seguintes
 
