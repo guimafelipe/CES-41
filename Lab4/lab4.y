@@ -113,7 +113,7 @@
 %type           <simb> FuncCall
 %token          <string> ID
 %token          <valor> INTCT
-%token          <carac> CHARCT
+%token          <string> CHARCT
 %token          <valreal> FLOATCT
 %token          <string> STRING
 %token          OR
@@ -311,26 +311,22 @@ Module        :
                   switch ($1) {
                     case INTEIRO: case CARACTERE:
                       if ($2 != INTEIRO && $2 != CARACTERE) {
-                        Incompatibilidade("Retorno deveria ser inteiro ou caractere!");
-                        printf("Esperava-se: %s. Em vez disso, retornou-se: %s\n\n", nometipvar[$1], nometipvar[$2]);
+                        Incompatibilidade("Retorno do modulo nao esta compativel com o seu tipo");
                       }
                       break;
                     case REAL:
                       if ($2 != INTEIRO &&  $2 != CARACTERE && $2 != REAL) {
-                        Incompatibilidade("Retorno deveria ser inteiro ou caractere ou real!");
-                        printf("Esperava-se: %s. Em vez disso, retornou-se: %s\n\n", nometipvar[$1], nometipvar[$2]);
+                        Incompatibilidade("Retorno do modulo nao esta compativel com o seu tipo");
                       }
                       break;
                     case LOGICO:
                       if ($2 != LOGICO) {
-                        Incompatibilidade("Retorno deveria ser do tipo logico!");
-                        printf("Esperava-se: %s. Em vez disso, retornou-se: %s\n\n", nometipvar[$1], nometipvar[$2]);
+                        Incompatibilidade("Retorno do modulo nao esta compativel com o seu tipo");
                       }
                       break;
                     case NAOVAR:
                       if ($2 != NAOVAR) {
-                        Incompatibilidade("Funcao tipo Void!");
-                        printf("Esperava-se: void. Em vez disso, retornou-se: %s\n\n", nometipvar[$2]);
+                        Incompatibilidade("Retorno do modulo nao esta compativel com o seu tipo");
                       }
                       break;
                 }
@@ -473,7 +469,7 @@ IfStat        :
                   if($3 != LOGICO)
                     Incompatibilidade("As expressões devem ser relacionais ou logicas"); 
                 }
-                THEN {printf("then\n");}
+                THEN {printf(" then\n");}
                 Statement
                 ElseStat
               ;
@@ -524,13 +520,13 @@ ForStat       :
                   if ($7 != INTEIRO && $7 != CARACTERE)
                     Incompatibilidade("Deve ser inteiro ou caractere");
                 }  
-                COLON  {printf(": ");}
+                COLON  {printf(" : ");}
                 Expression 
                 {
                   if( $11 != LOGICO )
                     Incompatibilidade("Deve ser logico"); 
                 }  
-                COLON {printf(": ");}
+                COLON {printf(" : ");}
                 AuxExpr4 
                 {
                   if( $15 != INTEIRO && $15 != CARACTERE )
@@ -593,13 +589,14 @@ CallStat      :
                 {
                   printf("\( ");
                   simb = ProcuraSimb ($3, escopo->escopo);
-                  if (!simb)
+                  if (simb == NULL)
                     NaoDeclarado ($3);
                   else if (simb->tid != IDFUNC)
                     TipoInadequado ($3);
 
                   if(simb->tvar != VOID)
                     Incompatibilidade("Tipo incompativel com comando Call");
+
                   $<simb>$ = simb;
                 }
                 Arguments
@@ -697,7 +694,7 @@ AuxExpr1      :
 AuxExpr2      :
                 AuxExpr3
               |
-                NOT {printf("!");}
+                NOT {printf(" !");}
                 AuxExpr3
                 {
                   if ($3 != LOGICO)
@@ -806,10 +803,10 @@ Term          :
 Factor        :
                 Variable
                 {
-                    if  ($1 != NULL) {
-                        $1->ref = VERDADE;
-                        $$ = $1->tvar;
-                    }
+                  if  ($1 != NULL) {
+                    $1->ref = VERDADE;
+                    $$ = $1->tvar;
+                  }
                 }
               |
                 INTCT
@@ -826,7 +823,7 @@ Factor        :
               |
                 CHARCT
                 {
-                  printf("%c", $1);
+                  printf("%s", $1);
                   $$ = CARACTERE;
                 }
               |
@@ -966,12 +963,11 @@ FuncCall      :
                   if ($$ && $$->tid == IDFUNC) {
                     if ($$->nparam != $5.nargs)
                       Incompatibilidade("Numero de argumentos diferente do  numero de parametros");
-                              
-                    if(($5.listtipo != NULL) && ($$->listparam != NULL))     
-                      ChecArgumentos  ($5.listtipo, $$->listparam);
-
+                    
                     if(simb->tvar == VOID)
-                        Incompatibilidade("O tipo da funcao do identificador de uma chamada de funcao nao pode ser void");
+                      Incompatibilidade("Tipo do identificador de chamada de funcao numa expressao nao deve ser void");
+                    else if(($5.listtipo != NULL) && ($$->listparam != NULL))     
+                      ChecArgumentos  ($5.listtipo, $$->listparam);
                   }
                 }
               ;
@@ -987,9 +983,10 @@ void InicTabSimb () {
 simbolo ProcuraSimb (char *cadeia, simbolo escopo) {
   simbolo s; int i;
   i = hash (cadeia);
-  for (s = tabsimb[i]; (s!=NULL) && strcmp(cadeia, s->cadeia); s = s->prox)
-    if(s->escopo == escopo)
+  for (s = tabsimb[i]; s!=NULL; s = s->prox) {
+    if(strcmp(cadeia, s->cadeia) == 0 && s->escopo == escopo)
       break;
+  }
   return s;
 }
 
