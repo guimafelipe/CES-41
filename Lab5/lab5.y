@@ -206,6 +206,7 @@
   simbolo simb;
   infoexpressao infoexpr;
   infovariavel infovar;
+  infolistexpr infolexpr;
   int nsubscr;
 };
 
@@ -213,7 +214,7 @@
 %type           <infoexpr> Expression AuxExpr1 AuxExpr2 AuxExpr3 AuxExpr4 Term Factor
 %type           <infoexpr> ReturnStat Type ModHeader Module ModBody Stats CompStat StatList Statement
 %type           <nsubscr> Subscripts SubscrList
-%type           <infoexpr> ExprList Arguments
+%type           <infolexpr> ExprList Arguments
 %type           <simb> FuncCall
 %token          <string> ID
 %token          <valor> INTCT
@@ -485,7 +486,7 @@ ModHeader     :
                 CLPAR {printf(")\n");}
                 {
                   declparam = FALSO;
-                  $$.tipo = $<infoexpr>4;
+                  $$ = $<infoexpr>4;
                 }
               ;
 ParamList     :
@@ -545,32 +546,32 @@ CompStat      :
               ;
 StatList      : StatList
                 Statement
-                {$$.tipo = $2;}
+                {$$ = $2;}
               |
                 {$$.tipo = NAOVAR;}
               ;
 Statement     :
                 CompStat {$$ = $1;}
               |
-                IfStat {$$ = NAOVAR;} 
+                IfStat {$$.tipo = NAOVAR;} 
               |
-                WhileStat {$$ = NAOVAR;}
+                WhileStat {$$.tipo = NAOVAR;}
               |
-                RepeatStat {$$ = NAOVAR;} 
+                RepeatStat {$$.tipo = NAOVAR;} 
               |
-                ForStat {$$ = NAOVAR;} 
+                ForStat {$$.tipo = NAOVAR;} 
               |
-                ReadStat {$$ = NAOVAR;} 
+                ReadStat {$$.tipo = NAOVAR;} 
               |
-                WriteStat {$$ = NAOVAR;} 
+                WriteStat {$$.tipo = NAOVAR;} 
               |
-                AssignStat {$$ = NAOVAR;} 
+                AssignStat {$$.tipo = NAOVAR;} 
               |
-                CallStat {$$ = NAOVAR;} 
+                CallStat {$$.tipo = NAOVAR;} 
               |
                 ReturnStat {$$ = $1;}
               |
-                SCOLON {printf(";\n"); $$ = NAOVAR;}
+                SCOLON {printf(";\n"); $$.tipo = NAOVAR;}
               ;
 
 IfStat        :
@@ -609,7 +610,7 @@ RepeatStat    :
                 WHILE {printf("while ");}
                 Expression
                 {
-                  if($6 != LOGICO)
+                  if($6.tipo != LOGICO)
                     Incompatibilidade("A expressao deve ser logica");   
                 }
                 SCOLON {printf(";\n");}
@@ -619,28 +620,28 @@ ForStat       :
                 FOR {printf("for ");}
                 Variable
                 {
-                  if($3 != NULL) {
-                    $3->ref = $3->inic = VERDADE;
-                    if ($3->tvar != INTEIRO && $3->tvar != CARACTERE)
+                  if($3.simb != NULL) {
+                    $3.simb->ref = $3.simb->inic = VERDADE;
+                    if ($3.simb->tvar != INTEIRO && $3.simb->tvar != CARACTERE)
                       Incompatibilidade("Deve ser inteiro ou caractere");
                   }                    
                 }
                 OPPAR {printf(" \(");}
                 AuxExpr4 
                 {
-                  if ($7 != INTEIRO && $7 != CARACTERE)
+                  if ($7.tipo != INTEIRO && $7.tipo != CARACTERE)
                     Incompatibilidade("Deve ser inteiro ou caractere");
                 }  
                 COLON  {printf(" : ");}
                 Expression 
                 {
-                  if( $11 != LOGICO )
+                  if( $11.tipo != LOGICO )
                     Incompatibilidade("Deve ser logico"); 
                 }  
                 COLON {printf(" : ");}
                 AuxExpr4 
                 {
-                  if( $15 != INTEIRO && $15 != CARACTERE )
+                  if( $15.tipo != INTEIRO && $15.tipo != CARACTERE )
                     Incompatibilidade("Deve ser inteiro ou caractere"); 
                 }  
                 CLPAR {printf (") ");}
@@ -725,7 +726,7 @@ ReturnStat    :
                 SCOLON
                 {
                   printf(";\n");
-                  $$ = NAOVAR;
+                  $$.tipo = NAOVAR;
                 }
               |
                 RETURN {printf("return ");}
@@ -761,7 +762,7 @@ ExprList      :
                 Expression
                 {
                   $$.nargs = 1;
-                  $$.listtipo = InicListTipo ($1);
+                  $$.listtipo = InicListTipo ($1.tipo);
                 }
               |
                 ExprList
@@ -769,7 +770,7 @@ ExprList      :
                 Expression
                 {
                   $$.nargs = $1.nargs + 1;
-                  $$.listtipo = ConcatListTipo ($1.listtipo, InicListTipo ($4));
+                  $$.listtipo = ConcatListTipo ($1.listtipo, InicListTipo ($4.tipo));
                 }
               ;
 
@@ -863,22 +864,22 @@ AuxExpr3      :
                   $$.opnd.tipo = VAROPND;
                   $$.opnd.atr.simb = NovaTemp ($$.tipo, escopo);
                   switch ($2) {
-                      case LT:
+                      case MENOR:
                           GeraQuadrupla (OPLT, $1.opnd, $4.opnd, $$.opnd);
                           break;
-                      case LE:
+                      case MENIG:
                           GeraQuadrupla (OPLE, $1.opnd, $4.opnd, $$.opnd);
                           break;
-                      case GT:
+                      case MAIOR:
                           GeraQuadrupla (OPGT, $1.opnd, $4.opnd, $$.opnd);
                           break;
-                      case GE:
+                      case MAIG:
                           GeraQuadrupla (OPGE, $1.opnd, $4.opnd, $$.opnd);
                           break;
-                      case EQ:
+                      case IGUAL:
                           GeraQuadrupla (OPEQ, $1.opnd, $4.opnd, $$.opnd);
                           break;
-                      case NE:
+                      case DIFER:
                           GeraQuadrupla (OPNE, $1.opnd, $4.opnd, $$.opnd);
                           break;
                   }
@@ -936,7 +937,7 @@ Term          :
                         $$.tipo = INTEIRO;
                       $$.opnd.tipo = VAROPND;
                       $$.opnd.atr.simb = NovaTemp ($$.tipo, escopo);
-                      if ($2 == MULT)
+                      if ($2 == VEZES)
                         GeraQuadrupla   (OPMULTIP, $1.opnd, $4.opnd, $$.opnd);
                       else
                         GeraQuadrupla  (OPDIV, $1.opnd, $4.opnd, $$.opnd);
@@ -1030,7 +1031,7 @@ Factor        :
               |
                 FuncCall
                 {
-                  $$ = $1->tvar;
+                  $$ = $1.tipo;
                 }
               ;
 
