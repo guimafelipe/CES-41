@@ -66,7 +66,7 @@ var                 {return VAR;}
 ":"                 {return COLON;}
 ":="                {return ASSIGN;}
 "/*"                {comentario ();}
-{charct}            {strcpy (yylval.string, yytext); return CHARCT;}
+{charct}            {yylval.carac = yytext[0]; return CHARCT;}
 {string}            {strcpy (yylval.string, yytext); return STRING;}
 .                   {yylval.carac = yytext[0]; return INVAL;}
 %%

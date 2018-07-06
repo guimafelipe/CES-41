@@ -215,10 +215,10 @@
 %type           <infoexpr> ReturnStat Type ModHeader Module ModBody Stats CompStat StatList Statement
 %type           <nsubscr> Subscripts SubscrList
 %type           <infolexpr> ExprList Arguments
-%type           <simb> FuncCall
+%type           <infovar> FuncCall
 %token          <string> ID
 %token          <valor> INTCT
-%token          <string> CHARCT
+%token          <carac> CHARCT
 %token          <valreal> FLOATCT
 %token          <string> STRING
 %token          OR
@@ -1031,7 +1031,8 @@ Factor        :
               |
                 FuncCall
                 {
-                  $$ = $1.tipo;
+                  $$.tipo = $1.simb->tvar;
+                  $$.opnd = $1.opnd;
                 }
               ;
 
@@ -1128,16 +1129,16 @@ FuncCall      :
                     NaoDeclarado ($1);
                   else if (simb->tid != IDFUNC)
                     TipoInadequado ($1);
-                  $$ = simb;
+                  $$.simb = simb;
                                         
-                  if ($$ && $$->tid == IDFUNC) {
-                    if ($$->nparam != $5.nargs)
+                  if ($$.simb && $$.simb->tid == IDFUNC) {
+                    if ($$.simb->nparam != $5.nargs)
                       Incompatibilidade("Numero de argumentos diferente do  numero de parametros");
                     
                     if(simb->tvar == VOID)
                       Incompatibilidade("Tipo do identificador de chamada de funcao numa expressao nao deve ser void");
-                    else if(($5.listtipo != NULL) && ($$->listparam != NULL))     
-                      ChecArgumentos  ($5.listtipo, $$->listparam);
+                    else if(($5.listtipo != NULL) && ($$.simb->listparam != NULL))     
+                      ChecArgumentos  ($5.listtipo, $$.simb->listparam);
                   }
                 }
               ;
