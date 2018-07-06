@@ -1,0 +1,33 @@
+AnaliseDeTexto {{{
+var {
+int i ;
+}
+main var {
+int j ;
+}
+statements {
+i:= 1;
+j:= 1;
+if i
+
+***** Incompatibilidade: As expressões devem ser relacionais ou logicas *****
+
+ then
+i:= 2;
+}
+}}}
+
+
+
+   TABELA  DE  SIMBOLOS:
+
+Classe 5:
+  (##global, IDGLOB)
+Classe 7:
+  (main, IDFUNC)
+Classe 13:
+  (i, IDVAR, INTEIRO, 1, 1)
+Classe 14:
+  (j, IDVAR, INTEIRO, 1, 1)
+Classe 22:
+  (AnaliseDeTexto, IDPROG)

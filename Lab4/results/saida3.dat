@@ -1,0 +1,32 @@
+AnaliseDeTexto {{{
+var {
+int i ;
+}
+main var {
+int j ;
+}
+statements {
+i:= 1;
+j:= 1;
+z
+
+***** Identificador Nao Declarado: z *****
+
+:= 1;
+}
+}}}
+
+
+
+   TABELA  DE  SIMBOLOS:
+
+Classe 5:
+  (##global, IDGLOB)
+Classe 7:
+  (main, IDFUNC)
+Classe 13:
+  (i, IDVAR, INTEIRO, 1, 1)
+Classe 14:
+  (j, IDVAR, INTEIRO, 1, 1)
+Classe 22:
+  (AnaliseDeTexto, IDPROG)

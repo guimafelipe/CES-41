@@ -1,0 +1,18 @@
+AnaliseDeTexto {{{
+
+var {
+int i;
+}
+
+main
+var {
+int j;
+}
+statements {
+	i := 1;
+	j := 1;
+	if i then
+		i := 2;
+}
+
+}}} 

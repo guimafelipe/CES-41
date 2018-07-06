@@ -1,0 +1,46 @@
+AnaliseDeTexto {{{
+var {
+int i ;
+}
+int Procura (int b b)
+var {
+int a ;
+}
+statements {
+a:= 1;
+b:= 1;
+}
+
+
+***** Incompatibilidade: Retorno do modulo nao esta compativel com o seu tipo *****
+
+main var {
+int j ;
+}
+statements {
+i:= 1;
+j:= 1;
+if i = 1 then
+i:= 2;
+}
+}}}
+
+
+
+   TABELA  DE  SIMBOLOS:
+
+Classe 5:
+  (a, IDVAR, INTEIRO, 1, 1)
+  (##global, IDGLOB)
+Classe 6:
+  (b, IDVAR, INTEIRO, 1, 1)
+Classe 7:
+  (main, IDFUNC)
+Classe 13:
+  (i, IDVAR, INTEIRO, 1, 1)
+Classe 14:
+  (j, IDVAR, INTEIRO, 1, 1)
+Classe 19:
+  (Procura, IDFUNC)
+Classe 22:
+  (AnaliseDeTexto, IDPROG)
