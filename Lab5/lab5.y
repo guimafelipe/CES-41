@@ -179,7 +179,7 @@
   void InicCodIntermMod (simbolo);
   void ImprimeQuadruplas (void);
   quadrupla GeraQuadrupla (int, operando, operando, operando);
-  simbolo NovaTemp (int);
+  simbolo NovaTemp (int, simbolo);
   void RenumQuadruplas (quadrupla, quadrupla);
 
   /* Declaracoes para atributos das expressoes e variaveis */
@@ -419,24 +419,24 @@ Module        :
                 ModHeader
                 ModBody
                 {      
-                  switch ($1) {
+                  switch ($1.tipo) {
                     case INTEIRO: case CARACTERE:
-                      if ($2 != INTEIRO && $2 != CARACTERE) {
+                      if ($2.tipo != INTEIRO && $2.tipo != CARACTERE) {
                         Incompatibilidade("Retorno do modulo nao esta compativel com o seu tipo");
                       }
                       break;
                     case REAL:
-                      if ($2 != INTEIRO &&  $2 != CARACTERE && $2 != REAL) {
+                      if ($2.tipo != INTEIRO &&  $2.tipo != CARACTERE && $2.tipo != REAL) {
                         Incompatibilidade("Retorno do modulo nao esta compativel com o seu tipo");
                       }
                       break;
                     case LOGICO:
-                      if ($2 != LOGICO) {
+                      if ($2.tipo != LOGICO) {
                         Incompatibilidade("Retorno do modulo nao esta compativel com o seu tipo");
                       }
                       break;
                     case NAOVAR:
-                      if ($2 != NAOVAR) {
+                      if ($2.tipo != NAOVAR) {
                         Incompatibilidade("Retorno do modulo nao esta compativel com o seu tipo");
                       }
                       break;
@@ -479,13 +479,13 @@ ModHeader     :
                     pontvardecl = simb->listvardecl;
                     pontparam = simb->listparam;
                   }
-                  $<simb>$ = $1;
+                  $<infoexpr>$ = $1;
                 }
                 ParamList
                 CLPAR {printf(")\n");}
                 {
                   declparam = FALSO;
-                  $$ = $<simb>4;
+                  $$.tipo = $<infoexpr>4;
                 }
               ;
 ParamList     :
@@ -784,7 +784,7 @@ Expression    :
                     Incompatibilidade("Operando improprio para operador or");
                   $$.tipo = LOGICO;
                   $$.opnd.tipo = VAROPND;
-                  $$.opnd.atr.simb = NovaTemp ($$.tipo);
+                  $$.opnd.atr.simb = NovaTemp ($$.tipo, escopo);
                   GeraQuadrupla (OPOR, $1.opnd, $4.opnd, $$.opnd);
                 }
               ;
@@ -800,7 +800,7 @@ AuxExpr1      :
                     Incompatibilidade("Operando improprio para operador and");
                   $$.tipo = LOGICO;
                   $$.opnd.tipo = VAROPND;
-                  $$.opnd.atr.simb = NovaTemp ($$.tipo);
+                  $$.opnd.atr.simb = NovaTemp ($$.tipo, escopo);
                   GeraQuadrupla (OPAND, $1.opnd, $4.opnd, $$.opnd);
                 }
               ;
@@ -815,7 +815,7 @@ AuxExpr2      :
                     Incompatibilidade("Operando improprio para operador not");
                   $$.tipo = LOGICO;
                   $$.opnd.tipo = VAROPND;
-                  $$.opnd.atr.simb = NovaTemp ($3.tipo);
+                  $$.opnd.atr.simb = NovaTemp ($3.tipo, escopo);
                   GeraQuadrupla (OPNOT, $3.opnd, opndidle, $$.opnd);
                 }
               ;
@@ -861,7 +861,7 @@ AuxExpr3      :
                   }
                   $$.tipo = LOGICO;
                   $$.opnd.tipo = VAROPND;
-                  $$.opnd.atr.simb = NovaTemp ($$.tipo);
+                  $$.opnd.atr.simb = NovaTemp ($$.tipo, escopo);
                   switch ($2) {
                       case LT:
                           GeraQuadrupla (OPLT, $1.opnd, $4.opnd, $$.opnd);
@@ -903,7 +903,7 @@ AuxExpr4      :
                   else
                     $$.tipo = INTEIRO;
                   $$.opnd.tipo = VAROPND;
-                  $$.opnd.atr.simb = NovaTemp ($$.tipo);
+                  $$.opnd.atr.simb = NovaTemp ($$.tipo, escopo);
                   if ($2 == MAIS)
                     GeraQuadrupla (OPMAIS, $1.opnd, $4.opnd, $$.opnd);
                   else
@@ -935,7 +935,7 @@ Term          :
                       else
                         $$.tipo = INTEIRO;
                       $$.opnd.tipo = VAROPND;
-                      $$.opnd.atr.simb = NovaTemp ($$.tipo);
+                      $$.opnd.atr.simb = NovaTemp ($$.tipo, escopo);
                       if ($2 == MULT)
                         GeraQuadrupla   (OPMULTIP, $1.opnd, $4.opnd, $$.opnd);
                       else
@@ -946,7 +946,7 @@ Term          :
                         Incompatibilidade("Operando improprio para operador resto");
                       $$.tipo = INTEIRO;
                       $$.opnd.tipo = VAROPND;
-                      $$.opnd.atr.simb = NovaTemp ($$.tipo);
+                      $$.opnd.atr.simb = NovaTemp ($$.tipo, escopo);
                       GeraQuadrupla (OPRESTO, $1.opnd, $4.opnd, $$.opnd);
                       break;
                   }
@@ -1012,7 +1012,7 @@ Factor        :
                   if ($3.tipo == REAL) $$.tipo = REAL;
                   else $$.tipo = INTEIRO;
                   $$.opnd.tipo = VAROPND;
-                  $$.opnd.atr.simb = NovaTemp ($$.tipo);
+                  $$.opnd.atr.simb = NovaTemp ($$.tipo, escopo);
                   GeraQuadrupla  (OPMENUN, $3.opnd, opndidle, $$.opnd);
                 }
               |
@@ -1370,7 +1370,7 @@ quadrupla GeraQuadrupla (int oper, operando opnd1, operando opnd2,
     return quadcorrente;
 }
 
-simbolo NovaTemp (int tip) {
+simbolo NovaTemp (int tip, simbolo escopo) {
   simbolo simb; int temp, i, j;
   char nometemp[10] = "##", s[10] = {0};
 
@@ -1380,7 +1380,7 @@ simbolo NovaTemp (int tip) {
   i --;
   for (j = 0; j <= i; j++)
     nometemp[2+i-j] = s[j];
-  simb = InsereSimb (nometemp, IDVAR, tip);
+  simb = InsereSimb (nometemp, IDVAR, tip, escopo);
   simb->inic = simb->ref = VERDADE;
     simb->array = FALSO;
   return simb;
