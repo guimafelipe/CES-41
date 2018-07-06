@@ -1,0 +1,16 @@
+AnaliseDeTexto {{{
+var {
+char nomes [50 , 10], palavra [10];
+int ntab , nocorr [50];
+char c ;
+logic fim ;
+}
+int Procura ()var {
+int i , inf , sup , med , posic , compara ;
+logic fim , fimteste ;
+}
+statements {
+achou
+
+***** Identificador Nao Declarado: achou *****
+

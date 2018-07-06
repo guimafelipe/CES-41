@@ -1,0 +1,27 @@
+AnaliseDeTexto {{{
+
+var {
+int i;
+}
+
+int Procura (int b)
+var {
+	int a;
+}
+statements {
+	a := 1;
+	b := 1;
+}
+
+main
+var {
+int j;
+}
+statements {
+	i := 1;
+	j := 1;
+	if i = 1 then
+		i := 2;
+}
+
+}}} 

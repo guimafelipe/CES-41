@@ -1,0 +1,16 @@
+AnaliseDeTexto {{{
+
+var {
+int i;
+}
+
+main
+var {
+int j;
+}
+statements {
+	i := 1;
+	j := 1.2;
+}
+
+}}} 

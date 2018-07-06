@@ -1,0 +1,238 @@
+
+/*  Programa para contar as ocorrencias das
+    palavras de um texto                    */
+
+AnaliseDeTexto {{{
+
+/*  Variaveis globais  */
+
+var {
+char nomes [50 , 10], palavra [10];
+int ntab , nocorr [50];
+char c ;
+logic Procura ;
+}
+
+/*  Funcao para procurar uma palavra na tabela de palavras  */
+
+int Procura ()
+
+***** Declaracao Repetida: Procura *****
+
+var {
+int i , inf , sup , med , posic , compara ;
+logic achou , fimteste ;
+}
+statements {
+achou:= false;
+inf:= 1;
+sup:= ntab;
+while  !achou && sup >= infdo
+{
+med:= ( inf+sup) /2;
+compara:= 0;
+fimteste:= false;
+for i (0 :  !fimteste && compara = 0 : i+1) {
+if palavra[i]  < nomes[med,i]  then
+compara:= ~1;
+else
+if palavra[i]  > nomes[med,i]  then
+compara:= 1;
+if palavra[i]  = '\0' || nomes[med,i]  = '\0' then
+fimteste:= true;
+}
+if compara = 0 then
+achou:= true;
+else
+if compara < 0 then
+sup:= med-1;
+else
+inf:= med+1;
+}
+if achou then
+posic:= med;
+else
+posic:= ~inf;
+return posic;
+}
+
+/*  Procedimento para inserir uma palavra na tabela de palavras  */
+
+void Inserir (int posic posic)
+var {
+int i , j ;
+logic fim ;
+}
+statements {
+ntab:= ntab+1;
+for i (ntab : i >= posic+1 : i-1) {
+fim:= false;
+for j (0 :  !fim : j+1) {
+nomes[i,j] := nomes[i-1,j] ;
+if nomes[i,j]  = '\0' then
+fim:= true;
+}
+nocorr[i] := nocorr[i-1] ;
+}
+fim:= false;
+for j (0 :  !fim : j+1) {
+nomes[posic,j] := palavra[j] ;
+if palavra[j]  = '\0' then
+fim:= true;
+}
+nocorr[posic] := 1;
+}
+
+/*  Procedimento para escrever a tabela de palavras  */
+
+void ExibirTabela ()var {
+int i ;
+logic fim ;
+}
+statements {
+write ( STRING , STRING , STRING ) ;
+for i (1 : i <= 50 : i+1) write ( STRING ) ;
+for i (1 : i <= ntab : i+1) {
+write ( STRING ) ;
+fim:= false;
+for j
+
+***** Identificador Nao Declarado: j *****
+
+ (0 :  !fim : j
+
+***** Identificador Nao Declarado: j *****
+
++1
+
+***** Incompatibilidade: Operando improprio para operador aritmetico *****
+
+) {
+if nomes[i,j
+
+***** Identificador Nao Declarado: j *****
+
+
+
+***** Incompatibilidade: Tipo inadequado para subscrito *****
+
+]  = '\0' then
+fim:= true;
+else
+write ( nomes[i,j
+
+***** Identificador Nao Declarado: j *****
+
+
+
+***** Incompatibilidade: Tipo inadequado para subscrito *****
+
+] ) ;
+}
+write ( STRING , nocorr[i] ) ;
+}
+}
+
+/*  Modulo principal  */
+
+main var {
+int i , posic ;
+char c ;
+logic fim ;
+}
+statements {
+ntab:= 0;
+write ( STRING ) ;
+read ( c) ;
+while c = 's' || c = 'S'do
+{
+write ( STRING ) ;
+fim:= false;
+for i (0 :  !fim : i+1) {
+read ( palavra[i] ) ;
+if palavra[i]  = '\n' then
+{
+fim:= true;
+palavra[i] := '\0';
+}
+}
+posic:= Procura ()
+
+***** Identificador de Tipo Inadequado: Procura *****
+
+;
+
+
+***** Incompatibilidade: Lado direito de comando de atribuicao improprio *****
+
+if posic > 0 then
+nocorr[posic] := nocorr[posic] +1;
+else
+call Inserir( 
+
+***** Incompatibilidade: Tipo incompativel com comando Call *****
+
+~posic, i) ;
+write ( STRING ) ;
+read ( c) ;
+}
+call ExibirTabela( 
+
+***** Incompatibilidade: Tipo incompativel com comando Call *****
+
+) ;
+}
+}}}
+
+c: Nao Inicializada
+c: Nao Referenciada
+Procura: Nao Inicializada
+Procura: Nao Referenciada
+
+
+   TABELA  DE  SIMBOLOS:
+
+Classe 0:
+  (ExibirTabela, IDFUNC)
+Classe 3:
+  (compara, IDVAR, INTEIRO, 1, 1)
+Classe 5:
+  (##global, IDGLOB)
+Classe 7:
+  (c, IDVAR, CARACTERE, 1, 1)
+  (main, IDFUNC)
+  (c, IDVAR, CARACTERE, 0, 0)
+  (ntab, IDVAR, INTEIRO, 1, 1)
+  (palavra, IDVAR, CARACTERE, 1, 1, EH ARRAY
+	ndims = 1, dimensoes:  10)
+Classe 11:
+  (med, IDVAR, INTEIRO, 1, 1)
+Classe 13:
+  (posic, IDVAR, INTEIRO, 1, 1)
+  (i, IDVAR, INTEIRO, 1, 1)
+  (i, IDVAR, INTEIRO, 1, 1)
+  (i, IDVAR, INTEIRO, 1, 1)
+  (posic, IDVAR, INTEIRO, 1, 1)
+  (posic, IDVAR, INTEIRO, 1, 1)
+  (i, IDVAR, INTEIRO, 1, 1)
+Classe 14:
+  (j, IDVAR, INTEIRO, 1, 1)
+  (fimteste, IDVAR, LOGICO, 1, 1)
+Classe 15:
+  (nocorr, IDVAR, INTEIRO, 1, 1, EH ARRAY
+	ndims = 1, dimensoes:  50)
+Classe 17:
+  (fim, IDVAR, LOGICO, 1, 1)
+  (fim, IDVAR, LOGICO, 1, 1)
+  (fim, IDVAR, LOGICO, 1, 1)
+  (nomes, IDVAR, CARACTERE, 1, 1, EH ARRAY
+	ndims = 2, dimensoes:  50  10)
+Classe 18:
+  (inf, IDVAR, INTEIRO, 1, 1)
+Classe 19:
+  (Inserir, IDFUNC)
+  (Procura, IDVAR, LOGICO, 0, 0)
+Classe 22:
+  (achou, IDVAR, LOGICO, 1, 1)
+  (sup, IDVAR, INTEIRO, 1, 1)
+  (AnaliseDeTexto, IDPROG)
