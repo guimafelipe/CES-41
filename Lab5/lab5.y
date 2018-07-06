@@ -181,6 +181,21 @@
   quadrupla GeraQuadrupla (int, operando, operando, operando);
   simbolo NovaTemp (int);
   void RenumQuadruplas (quadrupla, quadrupla);
+
+  /* Declaracoes para atributos das expressoes e variaveis */
+
+  typedef struct infoexpressao infoexpressao;
+  struct infoexpressao {
+    int tipo;
+    operando opnd;
+  };
+
+  typedef struct infovariavel infovariavel;
+  struct infovariavel {
+    simbolo simb;
+    operando opnd;
+  };
+
 %}
 
 %union {
@@ -192,7 +207,7 @@
   infoexpressao infoexpr;
   infovariavel infovar;
   int nsubscr;
-}
+};
 
 %type           <infovar> Variable
 %type           <infoexpr> Expression AuxExpr1 AuxExpr2 AuxExpr3 AuxExpr4 Term Factor
